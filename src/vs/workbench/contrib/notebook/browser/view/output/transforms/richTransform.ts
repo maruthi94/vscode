@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { IRenderOutput, CellOutputKind } from 'vs/workbench/contrib/notebook/common/notebookCommon';
-import { registerOutputTransform } from 'vs/workbench/contrib/notebook/browser/notebookRegistry';
+import { NotebookRegistry } from 'vs/workbench/contrib/notebook/browser/notebookRegistry';
 import * as DOM from 'vs/base/browser/dom';
 import { INotebookEditor, IOutputTransformContribution } from 'vs/workbench/contrib/notebook/browser/notebookBrowser';
 import { isArray } from 'vs/base/common/types';
@@ -212,7 +212,7 @@ class RichRenderer implements IOutputTransformContribution {
 	renderPlainText(output: any, container: HTMLElement) {
 		let data = output.data['text/plain'];
 		let str = isArray(data) ? data.join('') : data;
-		const contentNode = document.createElement('div');
+		const contentNode = DOM.$('.output-plaintext');
 		contentNode.appendChild(handleANSIOutput(str, this.themeService));
 		container.appendChild(contentNode);
 
@@ -225,7 +225,7 @@ class RichRenderer implements IOutputTransformContribution {
 	}
 }
 
-registerOutputTransform('notebook.output.rich', CellOutputKind.Rich, RichRenderer);
+NotebookRegistry.registerOutputTransform('notebook.output.rich', CellOutputKind.Rich, RichRenderer);
 
 
 export function getOutputSimpleEditorOptions(): IEditorOptions {
